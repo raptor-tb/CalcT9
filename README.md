@@ -2,19 +2,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Base Value Troop Calculator</title>
+  <title>T9 Stacking Calculator</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --border: #334155;
-      --accent: #38bdf8;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --group-g9: #3b82f6;
-      --group-s9: #8b5cf6;
-      --group-g8: #ec4899;
-      --group-s8: #10b981;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --accent: #1e40af;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --group-g9: #2563eb;
+      --group-s9: #7c3aed;
+      --group-g8: #db2777;
+      --group-s8: #059669;
     }
 
     * {
@@ -46,12 +46,20 @@
     h1 {
       font-size: 1.8rem;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      color: var(--text);
     }
 
     p.subtitle {
       color: var(--text-muted);
       font-size: 0.95rem;
+    }
+
+    p.instruction {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-style: italic;
+      margin-top: 6px;
     }
 
     .input-card {
@@ -63,6 +71,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
 
     .input-group {
@@ -80,7 +89,7 @@
     }
 
     input[type="number"] {
-      background: var(--bg);
+      background: #f1f5f9;
       border: 1px solid var(--border);
       color: var(--text);
       padding: 12px 16px;
@@ -88,11 +97,12 @@
       font-size: 1.1rem;
       font-weight: 600;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, background-color 0.2s;
     }
 
     input[type="number"]:focus {
       border-color: var(--accent);
+      background: #ffffff;
     }
 
     .stat-row {
@@ -112,7 +122,7 @@
     .stat-value {
       font-size: 1.25rem;
       font-weight: 700;
-      color: var(--accent);
+      color: #1e3a8a;
       font-family: "Courier New", Courier, monospace;
     }
 
@@ -140,13 +150,27 @@
       border-radius: 12px;
       padding: 20px;
       overflow-x: auto;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
 
     .card h2 {
       font-size: 1.2rem;
-      margin-bottom: 16px;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .section-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
       padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
+    }
+
+    .card-header-line {
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 14px;
     }
 
     table {
@@ -159,6 +183,7 @@
     th, td {
       padding: 10px 12px;
       border-bottom: 1px solid var(--border);
+      color: var(--text);
     }
 
     th {
@@ -178,7 +203,7 @@
       border-radius: 4px;
       font-size: 0.75rem;
       font-weight: 700;
-      color: #fff;
+      color: #ffffff;
     }
 
     .badge-g9 { background-color: var(--group-g9); }
@@ -188,8 +213,8 @@
 
     .num-val {
       font-family: "Courier New", Courier, monospace;
-      font-weight: 600;
-      color: var(--accent);
+      font-weight: 700;
+      color: #1e3a8a;
       text-align: right;
     }
   </style>
@@ -198,13 +223,14 @@
 
   <div class="container">
     <header>
-      <h1>Troop & Unit Calculator</h1>
+      <h1>T9 Stacking Calculator</h1>
       <p class="subtitle">Calculates all troop types, monsters, and mercenaries based on input value</p>
+      <p class="instruction">Change the number of the 'base value' until you match your total leadership</p>
     </header>
 
     <div class="input-card">
       <div class="input-group">
-        <label for="baseInput">Base Value - Ranger G9</label>
+        <label for="baseInput">Base Value - Ranged Units G9</label>
         <input type="number" id="baseInput" value="13000" placeholder="Enter Base Value..." oninput="calculate()">
       </div>
       <div class="stat-row">
@@ -219,6 +245,7 @@
         <!-- Mercenaries Card -->
         <div class="card">
           <h2>Mercenaries</h2>
+          <p class="section-note">Max number of mercenaries, adjust per availability</p>
           <table>
             <thead>
               <tr>
@@ -233,6 +260,7 @@
         <!-- Monsters Card -->
         <div class="card">
           <h2>Monsters</h2>
+          <p class="section-note">Max numbers. Add M9 and then adjust M8/M7 to match your Dominance</p>
           <table>
             <thead>
               <tr>
@@ -248,7 +276,7 @@
       <!-- Right Column: Troop Calculations -->
       <div class="right-column">
         <div class="card">
-          <h2>Troop Calculations</h2>
+          <h2 class="card-header-line">Troop Calculations</h2>
           <table>
             <thead>
               <tr>
@@ -406,7 +434,7 @@
       troopsData.forEach(item => {
         if (item.divider) {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td colspan="3" style="padding: 4px; background: rgba(255,255,255,0.02);"></td>`;
+          tr.innerHTML = `<td colspan="3" style="padding: 4px; background: rgba(0,0,0,0.02);"></td>`;
           troopsTable.appendChild(tr);
           return;
         }
