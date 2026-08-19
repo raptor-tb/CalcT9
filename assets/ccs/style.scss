@@ -1,0 +1,8 @@
+---
+---
+@import "{{ site.theme }}";
+
+/* Hides the top repository title link */
+body > div > h1:first-child {
+  display: none !important;
+}
