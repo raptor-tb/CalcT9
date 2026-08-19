@@ -276,7 +276,7 @@
       <!-- Right Column: Troop Calculations -->
       <div class="right-column">
         <div class="card">
-          <h2 class="card-header-line">Troop Calculations</h2>
+          <h2 class="card-header-line">Troops</h2>
           <table>
             <thead>
               <tr>
