@@ -41,6 +41,94 @@
     header {
       margin-bottom: 24px;
       text-align: center;
+      position: relative;
+    }
+
+    .lang-container {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .lang-icon {
+      width: 20px;
+      height: 20px;
+      fill: var(--text-muted);
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .custom-lang-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .lang-btn {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .lang-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .flag-icon {
+      width: 20px;
+      height: 15px;
+      object-fit: cover;
+      border-radius: 2px;
+      box-shadow: 0 0 1px rgba(0,0,0,0.3);
+    }
+
+    .arrow-down {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 108%;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 100;
+      min-width: 130px;
+      overflow: hidden;
+    }
+
+    .lang-dropdown.show {
+      display: block;
+    }
+
+    .lang-option {
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      transition: background-color 0.15s;
+    }
+
+    .lang-option:hover {
+      background-color: #f1f5f9;
     }
 
     h1 {
@@ -88,7 +176,7 @@
       font-weight: 600;
     }
 
-    input[type="number"] {
+    input[type="text"] {
       background: #f1f5f9;
       border: 1px solid var(--border);
       color: var(--text);
@@ -100,7 +188,7 @@
       transition: border-color 0.2s, background-color 0.2s;
     }
 
-    input[type="number"]:focus {
+    input[type="text"]:focus {
       border-color: var(--accent);
       background: #ffffff;
     }
@@ -223,18 +311,57 @@
 
   <div class="container">
     <header>
-      <h1>T9 Stacking Calculator</h1>
-      <p class="subtitle">Calculates all troop types, monsters, and mercenaries based on input value</p>
-      <p class="instruction">Change the number of the 'base value' until you match your total leadership</p>
+      <div class="lang-container">
+        <!-- Language Switcher / Globe Icon -->
+        <svg class="lang-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+        </svg>
+
+        <!-- Custom Dropdown with SVG Flags -->
+        <div class="custom-lang-wrapper">
+          <button class="lang-btn" id="langBtn" onclick="toggleDropdown()">
+            <img id="currentFlag" class="flag-icon" src="https://flagcdn.com/w40/gb.png" alt="GB Flag">
+            <span id="currentLangText">English</span>
+            <span class="arrow-down">▼</span>
+          </button>
+          <div class="lang-dropdown" id="langDropdown">
+            <div class="lang-option" onclick="selectLanguage('en', 'English', 'gb')">
+              <img class="flag-icon" src="https://flagcdn.com/w40/gb.png" alt="GB Flag"> English
+            </div>
+            <div class="lang-option" onclick="selectLanguage('it', 'Italiano', 'it')">
+              <img class="flag-icon" src="https://flagcdn.com/w40/it.png" alt="IT Flag"> Italiano
+            </div>
+            <div class="lang-option" onclick="selectLanguage('es', 'Español', 'es')">
+              <img class="flag-icon" src="https://flagcdn.com/w40/es.png" alt="ES Flag"> Español
+            </div>
+            <div class="lang-option" onclick="selectLanguage('de', 'Deutsch', 'de')">
+              <img class="flag-icon" src="https://flagcdn.com/w40/de.png" alt="DE Flag"> Deutsch
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h1 id="txtTitle">T9 Stacking Calculator</h1>
+      <p class="subtitle" id="txtSubtitle">Calculates all troop types, monsters, and mercenaries based on input value</p>
+      <p class="instruction" id="txtInstruction">Change the number of the 'base value' until you match your total leadership</p>
     </header>
 
     <div class="input-card">
       <div class="input-group">
-        <label for="baseInput">Base Value - Ranged Units G9</label>
-        <input type="number" id="baseInput" value="13000" placeholder="Enter Base Value..." oninput="calculate()">
+        <label for="baseInput" id="txtBaseLabel">Base Value (Ranged Units G9)</label>
+        <input 
+          type="text" 
+          inputmode="numeric" 
+          id="baseInput" 
+          value="14637" 
+          placeholder="Enter Base Value..." 
+          onbeforeinput="handleBeforeInput(event)"
+          oninput="handleInput(event)"
+          onpaste="handlePaste(event)"
+        >
       </div>
       <div class="stat-row">
-        <span class="stat-label">Total Leadership Required</span>
+        <span class="stat-label" id="txtLeadershipLabel">Total Leadership Required</span>
         <span class="stat-value" id="totalLeadership">0</span>
       </div>
     </div>
@@ -244,13 +371,13 @@
       <div class="left-column">
         <!-- Mercenaries Card -->
         <div class="card">
-          <h2>Mercenaries</h2>
-          <p class="section-note">Max number of mercenaries, adjust per availability</p>
+          <h2 id="txtMercenariesTitle">Mercenaries</h2>
+          <p class="section-note" id="txtMercenariesNote">Max number of mercenaries, adjust per availability</p>
           <table>
             <thead>
               <tr>
-                <th>Unit Name</th>
-                <th style="text-align: right;">Count</th>
+                <th id="txtColMercUnit">Unit Name</th>
+                <th style="text-align: right;" id="txtColMercCount">Count</th>
               </tr>
             </thead>
             <tbody id="mercenariesTable"></tbody>
@@ -259,13 +386,13 @@
 
         <!-- Monsters Card -->
         <div class="card">
-          <h2>Monsters</h2>
-          <p class="section-note">Max numbers. Add M9 and then adjust M8/M7 to match your Dominance</p>
+          <h2 id="txtMonstersTitle">Monsters</h2>
+          <p class="section-note" id="txtMonstersNote">Max numbers. Add M9 and then adjust M8/M7 to match your Dominance</p>
           <table>
             <thead>
               <tr>
-                <th>Unit Name</th>
-                <th style="text-align: right;">Count</th>
+                <th id="txtColMonsterUnit">Unit Name</th>
+                <th style="text-align: right;" id="txtColMonsterCount">Count</th>
               </tr>
             </thead>
             <tbody id="monstersTable"></tbody>
@@ -276,13 +403,13 @@
       <!-- Right Column: Troop Calculations -->
       <div class="right-column">
         <div class="card">
-          <h2 class="card-header-line">Troops</h2>
+          <h2 class="card-header-line" id="txtTroopsTitle">Troops</h2>
           <table>
             <thead>
               <tr>
-                <th>Group</th>
-                <th>Troop Type</th>
-                <th style="text-align: right;">Count</th>
+                <th id="txtColTroopGroup">Group</th>
+                <th id="txtColTroopType">Troop Type</th>
+                <th style="text-align: right;" id="txtColTroopCount">Count</th>
               </tr>
             </thead>
             <tbody id="troopsTable"></tbody>
@@ -293,8 +420,193 @@
   </div>
 
   <script>
+    let currentLang = 'en';
+
+    const translations = {
+      en: {
+        title: "T9 Stacking Calculator",
+        subtitle: "Calculates all troop types, monsters, and mercenaries based on input value",
+        instruction: "Change the number of the 'base value' until you match your total leadership",
+        baseLabel: "Base Value (Ranged Units G9)",
+        leadershipLabel: "Total Leadership Required",
+        mercenariesTitle: "Mercenaries",
+        mercenariesNote: "Max number of mercenaries, adjust per availability",
+        monstersTitle: "Monsters",
+        monstersNote: "Max numbers. Add M9 and then adjust M8/M7 to match your Dominance",
+        troopsTitle: "Troops",
+        colUnitName: "Unit Name",
+        colCount: "Count",
+        colGroup: "Group",
+        colTroopType: "Troop Type",
+        troops: [
+          "CORAX II", "ROYAL LION II", "CORAX I", "ROYAL LION I",
+          "SMITER II", "WHITEMANE II", "SMITER I", "WHITEMANE I",
+          "PURIFIER II", "PUNISHER II", "LEGITIMIST II", "DUELIST II",
+          "PURIFIER I", "PUNISHER I", "LEGITIMIST I", "DUELIST I"
+        ],
+        monsters: ["M9", "M8", "M7"],
+        mercenaries: [
+          "WYVERN", "WARDEN", "SALAMANDER", "WARREGAL/JAGO", "CANNONEER",
+          "ARIEL", "EPIC HUNTER", "RIDERS", "TROOPS"
+        ]
+      },
+      it: {
+        title: "Calcolatore Stacking T9",
+        subtitle: "Calcola tutti i tipi di truppe, mostri e mercenari in base al valore inserito",
+        instruction: "Modifica il 'valore di base' finché non corrisponde alla Leadership Totale Richiesta",
+        baseLabel: "Valore di Base (Arcieri G9)",
+        leadershipLabel: "Leadership Totale Richiesta",
+        mercenariesTitle: "Mercenari",
+        mercenariesNote: "Numero massimo di mercenari, regola in base alla disponibilità",
+        monstersTitle: "Mostri",
+        monstersNote: "Numeri massimi. Aggiungi M9 e poi regola M8/M7 per coordinare la Dominanza",
+        troopsTitle: "Truppe",
+        colUnitName: "Nome Unità",
+        colCount: "Quantità",
+        colGroup: "Gruppo",
+        colTroopType: "Tipo di Truppa",
+        troops: [
+          "CORVO IMPERIALE II", "LEONE REGALE II", "CORVO IMPERIALE I", "LEONE REGALE I",
+          "DILANIATORE II", "CHIOMABIANCA II", "DILANIATORE I", "CHIOMABIANCA I",
+          "PURIFICATORE II", "CASTIGATORE II", "LEGITTIMISTA II", "DUELLANTE II",
+          "PURIFICATORE I", "CASTIGATORE I", "LEGITTIMISTA I", "DUELLANTE I"
+        ],
+        monsters: ["M9", "M8", "M7"],
+        mercenaries: [
+          "VIVERNA", "GUARDIANO", "SALAMANDRA", "WARREGAL/JAGO", "CANNONIERE ETERNO",
+          "ARIEL", "CACCIATORE DI MOSTRI EPICI", "CAVALIERI", "TRUPPE"
+        ]
+      },
+      es: {
+        title: "Calculadora de Stacking T9",
+        subtitle: "Calcula todos los tipos de tropas, monstruos y mercenarios según el valor ingresado",
+        instruction: "Cambia el 'valor base' hasta que coincida con tu liderazgo total",
+        baseLabel: "Valor Base (Unidades a Distancia G9)",
+        leadershipLabel: "Liderazgo Total Requerido",
+        mercenariesTitle: "Mercenarios",
+        mercenariesNote: "Número máximo de mercenarios, ajustar según disponibilidad",
+        monstersTitle: "Monstruos",
+        monstersNote: "Números máximos. Añade M9 y luego ajusta M8/M7 para igualar tu Dominio",
+        troopsTitle: "Tropas",
+        colUnitName: "Nombre de Unidad",
+        colCount: "Cantidad",
+        colGroup: "Grupo",
+        colTroopType: "Tipo de Tropa",
+        troops: [
+          "CORAX II", "LEÓN REAL II", "CORAX I", "LEÓN REAL I",
+          "GOLPEADOR II", "MELENA BLANCA II", "GOLPEADOR I", "MELENA BLANCA I",
+          "PURIFICADOR II", "CASTIGADOR II", "LEGITIMISTA II", "DUELISTA II",
+          "PURIFICADOR I", "CASTIGADOR I", "LEGITIMISTA I", "DUELISTA I"
+        ],
+        monsters: ["M9", "M8", "M7"],
+        mercenaries: [
+          "GUIVERNO", "GUARDIÁN", "SALAMANDRA", "WARREGAL/JAGO", "CAÑONERO",
+          "ARIEL", "CAZADOR ÉPICO", "JINETES", "TROPAS"
+        ]
+      },
+      de: {
+        title: "T9 Stacking Rechner",
+        subtitle: "Berechnet alle Truppentypen, Monster und Söldner basierend auf dem Eingabewert",
+        instruction: "Ändern Sie den 'Basiswert', bis er mit Ihrer Gesamtführung übereinstimmt",
+        baseLabel: "Basiswert (Fernkampfeinheiten G9)",
+        leadershipLabel: "Erforderliche Gesamtführung",
+        mercenariesTitle: "Söldner",
+        mercenariesNote: "Maximale Anzahl an Söldnern, je nach Verfügbarkeit anpassen",
+        monstersTitle: "Monster",
+        monstersNote: "Maximale Anzahl. M9 hinzufügen und M8/M7 an Ihre Dominanz anpassen",
+        troopsTitle: "Truppen",
+        colUnitName: "Einheitsname",
+        colCount: "Anzahl",
+        colGroup: "Gruppe",
+        colTroopType: "Truppentyp",
+        troops: [
+          "CORAX II", "KÖNIGSLÖWE II", "CORAX I", "KÖNIGSLÖWE I",
+          "PEINIGER II", "WEISSMÄHNE II", "PEINIGER I", "WEISSMÄHNE I",
+          "REINIGER II", "BESTRAFER II", "LEGITIMIST II", "DUELLANT II",
+          "REINIGER I", "BESTRAFER I", "LEGITIMIST I", "DUELLANT I"
+        ],
+        monsters: ["M9", "M8", "M7"],
+        mercenaries: [
+          "LINDWURM", "WÄCHTER", "SALAMANDER", "WARREGAL/JAGO", "KANONIER",
+          "ARIEL", "EPISCHER JÄGER", "REITER", "TRUPPEN"
+        ]
+      }
+    };
+
+    // Strict Input Validation Handlers
+    function handleBeforeInput(e) {
+      if (e.data && !/^[0-9]+$/.test(e.data)) {
+        e.preventDefault();
+      }
+    }
+
+    function handleInput(e) {
+      let val = e.target.value.replace(/[^0-9]/g, '');
+      if (val.length > 1 && val.startsWith('0')) {
+        val = val.replace(/^0+/, '');
+      }
+      e.target.value = val;
+      calculate();
+    }
+
+    function handlePaste(e) {
+      e.preventDefault();
+      const paste = (e.clipboardData || window.clipboardData).getData('text');
+      const clean = paste.replace(/[^0-9]/g, '').replace(/^0+/, '');
+      if (clean) {
+        e.target.value = clean;
+        calculate();
+      }
+    }
+
+    function toggleDropdown() {
+      document.getElementById('langDropdown').classList.toggle('show');
+    }
+
+    function selectLanguage(code, name, flagCode) {
+      currentLang = code;
+      document.getElementById('currentLangText').innerText = name;
+      document.getElementById('currentFlag').src = `https://flagcdn.com/w40/${flagCode}.png`;
+      document.getElementById('currentFlag').alt = `${flagCode.toUpperCase()} Flag`;
+      document.getElementById('langDropdown').classList.remove('show');
+      
+      updateTextLabels();
+      calculate();
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.closest('.custom-lang-wrapper')) {
+        const dropdown = document.getElementById('langDropdown');
+        if (dropdown && dropdown.classList.contains('show')) {
+          dropdown.classList.remove('show');
+        }
+      }
+    };
+
+    function updateTextLabels() {
+      const t = translations[currentLang];
+      document.getElementById('txtTitle').innerText = t.title;
+      document.getElementById('txtSubtitle').innerText = t.subtitle;
+      document.getElementById('txtInstruction').innerText = t.instruction;
+      document.getElementById('txtBaseLabel').innerText = t.baseLabel;
+      document.getElementById('txtLeadershipLabel').innerText = t.leadershipLabel;
+      document.getElementById('txtMercenariesTitle').innerText = t.mercenariesTitle;
+      document.getElementById('txtMercenariesNote').innerText = t.mercenariesNote;
+      document.getElementById('txtColMercUnit').innerText = t.colUnitName;
+      document.getElementById('txtColMercCount').innerText = t.colCount;
+      document.getElementById('txtMonstersTitle').innerText = t.monstersTitle;
+      document.getElementById('txtMonstersNote').innerText = t.monstersNote;
+      document.getElementById('txtColMonsterUnit').innerText = t.colUnitName;
+      document.getElementById('txtColMonsterCount').innerText = t.colCount;
+      document.getElementById('txtTroopsTitle').innerText = t.troopsTitle;
+      document.getElementById('txtColTroopGroup').innerText = t.colGroup;
+      document.getElementById('txtColTroopType').innerText = t.colTroopType;
+      document.getElementById('txtColTroopCount').innerText = t.colCount;
+    }
+
     function calculate() {
-      const baseInput = parseFloat(document.getElementById('baseInput').value);
+      const rawVal = document.getElementById('baseInput').value;
+      const baseInput = parseFloat(rawVal);
       const troopsTable = document.getElementById('troopsTable');
       const monstersTable = document.getElementById('monstersTable');
       const mercenariesTable = document.getElementById('mercenariesTable');
@@ -304,126 +616,105 @@
       monstersTable.innerHTML = '';
       mercenariesTable.innerHTML = '';
 
-      if (isNaN(baseInput)) {
+      if (isNaN(baseInput) || baseInput <= 0) {
         totalLeadershipEl.innerText = '0';
         return;
       }
 
+      const t = translations[currentLang];
       const B = baseInput;
-      const K5 = B * 5510;
 
-      // Group G9
-      const c5 = B;
-      const d5 = c5;
-      const c6 = c5 + 16;
-      const d6 = c6 / 20;
-      const c7 = c5 + 8;
-      const d7 = c7 / 2;
-      const c8 = c7 + 40;
-      const d8 = c8;
+      // New Exact Troop Leadership Calculations from Excel
+      const g9_ranged_lead  = B * 1.0;
+      const g9_corax2_lead  = B * 1.0002049600327936;
+      const g9_mounted_lead = B * 1.0000683200109313;
+      const g9_melee_lead   = B * 1.0041675206668033;
 
-      // Group G8
-      const c15 = c5 * 1.805;
-      const d15 = c15;
-      const c16 = c15 + 6;
-      const d16 = c16 / 20;
-      const c17 = c15 + 2;
-      const d17 = c17 / 2;
-      const c18 = c17 + 34;
-      const d18 = c18;
+      const s9_ranged_lead  = B * 1.0042358406777345;
+      const s9_lions2_lead  = B * 1.0043041606886658;
+      const s9_mounted_lead = B * 1.0043041606886658;
+      const s9_melee_lead   = B * 1.0077201612352258;
 
-      // Group S9
-      const c10 = c15 / 1.7999;
-      const d10 = c10;
-      const c11 = c10 + 2;
-      const d11 = c11 / 20;
-      const c12 = c10 + 2;
-      const d12 = c12 / 2;
-      const c13 = c10 + 70;
-      const d13 = c13;
+      const g8_ranged_lead  = B * 1.8061761289881806;
+      const g8_corax1_lead  = B * 1.8063810890209742;
+      const g8_mounted_lead = B * 1.8062444489991119;
+      const g8_melee_lead   = B * 1.8130764500922320;
 
-      // Group S8
-      const c20 = c15 + 38;
-      const d20 = c20;
-      const c23 = c20 + 60;
-      const d23 = c23;
-      const c21 = c23 + 2;
-      const d21 = c21 / 20;
-      const c22 = c23 - 20;
-      const d22 = c22 / 2;
+      const s8_ranged_lead  = B * 1.8131447701031630;
+      const s8_lions1_lead  = B * 1.8132130901140944;
+      const s8_mounted_lead = B * 1.8132130901140944;
+      const s8_melee_lead   = B * 1.8130764500922320;
 
-      // Cell C25: Total Leadership
-      const totalLeadership = c5 + c6 + c7 + c8 + c10 + c11 + c12 + c13 + c15 + c16 + c17 + c18 + c20 + c21 + c22 + c23;
+      // Total Leadership
+      const totalLeadership = g9_ranged_lead + g9_corax2_lead + g9_mounted_lead + g9_melee_lead +
+                              s9_ranged_lead + s9_lions2_lead + s9_mounted_lead + s9_melee_lead +
+                              g8_ranged_lead + g8_corax1_lead + g8_mounted_lead + g8_melee_lead +
+                              s8_ranged_lead + s8_lions1_lead + s8_mounted_lead + s8_melee_lead;
+
       totalLeadershipEl.innerText = Math.floor(totalLeadership).toLocaleString();
 
+      // Troops Counts
       const troopsData = [
         // Group 1
-        { group: 'G9', type: 'Corax II', count: d6 },
-        { group: 'S9', type: 'Lions II', count: d11 },
-        { group: 'G8', type: 'Corax I', count: d16 },
-        { group: 'S8', type: 'Lions I', count: d21 },
+        { group: 'G9', type: t.troops[0], count: g9_corax2_lead / 20 },
+        { group: 'S9', type: t.troops[1], count: s9_lions2_lead / 20 },
+        { group: 'G8', type: t.troops[2], count: g8_corax1_lead / 20 },
+        { group: 'S8', type: t.troops[3], count: s8_lions1_lead / 20 },
         { divider: true },
         // Group 2
-        { group: 'G9', type: 'Mounted', count: d7 },
-        { group: 'S9', type: 'Mounted', count: d12 },
-        { group: 'G8', type: 'Mounted', count: d17 },
-        { group: 'S8', type: 'Mounted', count: d22 },
+        { group: 'G9', type: t.troops[4], count: g9_mounted_lead / 2 },
+        { group: 'S9', type: t.troops[5], count: s9_mounted_lead / 2 },
+        { group: 'G8', type: t.troops[6], count: g8_mounted_lead / 2 },
+        { group: 'S8', type: t.troops[7], count: s8_mounted_lead / 2 },
         { divider: true },
         // Group 3
-        { group: 'G9', type: 'Ranged', count: d5 },
-        { group: 'G9', type: 'Melee', count: d8 },
-        { group: 'S9', type: 'Ranged', count: d10 },
-        { group: 'S9', type: 'Melee', count: d13 },
+        { group: 'G9', type: t.troops[8], count: g9_ranged_lead },
+        { group: 'G9', type: t.troops[9], count: g9_melee_lead },
+        { group: 'S9', type: t.troops[10], count: s9_ranged_lead },
+        { group: 'S9', type: t.troops[11], count: s9_melee_lead },
         { divider: true },
         // Group 4
-        { group: 'G8', type: 'Ranged', count: d15 },
-        { group: 'G8', type: 'Melee', count: d18 },
-        { group: 'S8', type: 'Ranged', count: d20 },
-        { group: 'S8', type: 'Melee', count: d23 },
+        { group: 'G8', type: t.troops[12], count: g8_ranged_lead },
+        { group: 'G8', type: t.troops[13], count: g8_melee_lead },
+        { group: 'S8', type: t.troops[14], count: s8_ranged_lead },
+        { group: 'S8', type: t.troops[15], count: s8_melee_lead },
       ];
 
-      // Monsters Calculations (M9, M8, M7)
-      const m6 = (K5 / 1210000) * 0.9 - 2;
-      const m7 = (K5 / 670000) * 0.9 - 3;
-      const m8 = (K5 / 310000) * 0.9 - 3;
+      // Factor for Monsters & Mercenaries
+      const factor = g9_ranged_lead * 5510;
+
+      // Monsters Calculations
+      const m9_val = (factor / 1210000) * 0.9 - 2;
+      const m8_val = (factor / 670000) * 0.9 - 3;
+      const m7_val = (factor / 310000) * 0.9 - 3;
 
       const monstersData = [
-        { name: 'M9', val: m6 },
-        { name: 'M8', val: m7 },
-        { name: 'M7', val: m8 },
+        { name: t.monsters[0], val: m9_val },
+        { name: t.monsters[1], val: m8_val },
+        { name: t.monsters[2], val: m7_val },
       ];
 
       // Mercenaries Calculations
-      const l11 = (K5 / 690000) * 0.9;
-      const m11 = l11 * 0.9;
-
-      const l12 = (K5 / 470000) * 0.9;
-      const m12 = l12 * 0.9;
-
-      const l13 = (K5 / 410000) * 0.9;
-      const m13 = l13 * 0.9;
-
-      const l14 = (K5 / 220000) * 0.9;
-      const m14 = l14 * 0.9;
-
-      const l15 = (K5 / 440000) * 0.9;
-      const m15 = l15 * 0.9;
-
-      const m16 = B * 0.0408;
-      const m17 = (K5 / 25000) * 0.9;
-      const m18 = (K5 / 22000) * 0.9;
-      const m19 = (K5 / 11000) * 0.9;
+      const wyvern_val     = (factor / 690000) * 0.9 * 0.9;
+      const warden_val     = (factor / 470000) * 0.9 * 0.9;
+      const salamander_val = (factor / 410000) * 0.9 * 0.9;
+      const warregal_val   = (factor / 220000) * 0.9 * 0.9;
+      const cannoneer_val  = (factor / 440000) * 0.9 * 0.9;
+      const ariel_val      = g9_ranged_lead * 0.0408;
+      const epic_hunter_val= (factor / 25000) * 0.9;
+      const riders_val     = (factor / 22000) * 0.9;
+      const troops_merc_val= (factor / 11000) * 0.9;
 
       const mercenariesData = [
-        { name: 'Wyvern', val: m11 },
-        { name: 'Warden', val: m12 },
-        { name: 'Salamander', val: m13 },
-        { name: 'Warregal/Jago', val: m14 },
-        { name: 'Cannoneer', val: m15 },
-        { name: 'Ariel', val: m16 },
-        { name: 'Epic Hunter', val: m17 },
-        { name: 'Riders', val: m18 },
-        { name: 'Troops', val: m19 },
+        { name: t.mercenaries[0], val: wyvern_val },
+        { name: t.mercenaries[1], val: warden_val },
+        { name: t.mercenaries[2], val: salamander_val },
+        { name: t.mercenaries[3], val: warregal_val },
+        { name: t.mercenaries[4], val: cannoneer_val },
+        { name: t.mercenaries[5], val: ariel_val },
+        { name: t.mercenaries[6], val: epic_hunter_val },
+        { name: t.mercenaries[7], val: riders_val },
+        { name: t.mercenaries[8], val: troops_merc_val },
       ];
 
       function fmt(v) {
