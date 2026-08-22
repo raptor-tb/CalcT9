@@ -150,6 +150,31 @@
       margin-top: 6px;
     }
 
+    .stacking-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 16px;
+      text-align: left;
+    }
+
+    select.stacking-select {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    select.stacking-select:focus {
+      border-color: var(--accent);
+    }
+
     .input-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -312,12 +337,10 @@
   <div class="container">
     <header>
       <div class="lang-container">
-        <!-- Language Switcher / Globe Icon -->
         <svg class="lang-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
         </svg>
 
-        <!-- Custom Dropdown with SVG Flags -->
         <div class="custom-lang-wrapper">
           <button class="lang-btn" id="langBtn" onclick="toggleDropdown()">
             <img id="currentFlag" class="flag-icon" src="https://flagcdn.com/w40/gb.png" alt="GB Flag">
@@ -344,6 +367,15 @@
       <h1 id="txtTitle">T9 Stacking Calculator</h1>
       <p class="subtitle" id="txtSubtitle">Calculates all troop types, monsters, and mercenaries based on input value</p>
       <p class="instruction" id="txtInstruction">Change the number of the 'base value' until you match your total leadership</p>
+
+      <div class="stacking-group">
+        <label for="stackingModeSelect" id="txtStackingLabel">Stacking Mode</label>
+        <select id="stackingModeSelect" class="stacking-select" onchange="calculate()">
+          <option value="0.005" id="optConservative">Conservative</option>
+          <option value="0.0035" id="optModerate">Moderate</option>
+          <option value="0.002" id="optAggressive">Aggressive</option>
+        </select>
+      </div>
     </header>
 
     <div class="input-card">
@@ -353,7 +385,7 @@
           type="text" 
           inputmode="numeric" 
           id="baseInput" 
-          value="14637" 
+          value="11500" 
           placeholder="Enter Base Value..." 
           onbeforeinput="handleBeforeInput(event)"
           oninput="handleInput(event)"
@@ -367,9 +399,7 @@
     </div>
 
     <div class="main-layout">
-      <!-- Left Column: Mercenaries Top, Monsters Bottom -->
       <div class="left-column">
-        <!-- Mercenaries Card -->
         <div class="card">
           <h2 id="txtMercenariesTitle">Mercenaries</h2>
           <p class="section-note" id="txtMercenariesNote">Max number of mercenaries, adjust per availability</p>
@@ -384,7 +414,6 @@
           </table>
         </div>
 
-        <!-- Monsters Card -->
         <div class="card">
           <h2 id="txtMonstersTitle">Monsters</h2>
           <p class="section-note" id="txtMonstersNote">Max numbers. Add M9 and then adjust M8/M7 to match your Dominance</p>
@@ -400,7 +429,6 @@
         </div>
       </div>
 
-      <!-- Right Column: Troop Calculations -->
       <div class="right-column">
         <div class="card">
           <h2 class="card-header-line" id="txtTroopsTitle">Troops</h2>
@@ -427,6 +455,10 @@
         title: "T9 Stacking Calculator",
         subtitle: "Calculates all troop types, monsters, and mercenaries based on input value",
         instruction: "Change the number of the 'base value' until you match your total leadership",
+        stackingLabel: "Stacking Mode",
+        optConservative: "Conservative",
+        optModerate: "Moderate",
+        optAggressive: "Aggressive",
         baseLabel: "Base Value (Ranged Units G9)",
         leadershipLabel: "Total Leadership Required",
         mercenariesTitle: "Mercenaries",
@@ -454,6 +486,10 @@
         title: "Calcolatore Stacking T9",
         subtitle: "Calcola tutti i tipi di truppe, mostri e mercenari in base al valore inserito",
         instruction: "Modifica il 'valore di base' finché non corrisponde alla Leadership Totale Richiesta",
+        stackingLabel: "Modo di Acumulo",
+        optConservative: "Conservativo",
+        optModerate: "Moderato",
+        optAggressive: "Aggressivo",
         baseLabel: "Valore di Base (Arcieri G9)",
         leadershipLabel: "Leadership Totale Richiesta",
         mercenariesTitle: "Mercenari",
@@ -481,6 +517,10 @@
         title: "Calculadora de Stacking T9",
         subtitle: "Calcula todos los tipos de tropas, monstruos y mercenarios según el valor ingresado",
         instruction: "Cambia el 'valor base' hasta que coincida con tu liderazgo total",
+        stackingLabel: "Modo de Acumulación",
+        optConservative: "Conservador",
+        optModerate: "Moderado",
+        optAggressive: "Agresivo",
         baseLabel: "Valor Base (Unidades a Distancia G9)",
         leadershipLabel: "Liderazgo Total Requerido",
         mercenariesTitle: "Mercenarios",
@@ -508,6 +548,10 @@
         title: "T9 Stacking Rechner",
         subtitle: "Berechnet alle Truppentypen, Monster und Söldner basierend auf dem Eingabewert",
         instruction: "Ändern Sie den 'Basiswert', bis er mit Ihrer Gesamtführung übereinstimmt",
+        stackingLabel: "Stacking-Modus",
+        optConservative: "Konservativ",
+        optModerate: "Moderat",
+        optAggressive: "Aggressiv",
         baseLabel: "Basiswert (Fernkampfeinheiten G9)",
         leadershipLabel: "Erforderliche Gesamtführung",
         mercenariesTitle: "Söldner",
@@ -533,7 +577,6 @@
       }
     };
 
-    // Strict Input Validation Handlers
     function handleBeforeInput(e) {
       if (e.data && !/^[0-9]+$/.test(e.data)) {
         e.preventDefault();
@@ -588,6 +631,10 @@
       document.getElementById('txtTitle').innerText = t.title;
       document.getElementById('txtSubtitle').innerText = t.subtitle;
       document.getElementById('txtInstruction').innerText = t.instruction;
+      document.getElementById('txtStackingLabel').innerText = t.stackingLabel;
+      document.getElementById('optConservative').innerText = t.optConservative;
+      document.getElementById('optModerate').innerText = t.optModerate;
+      document.getElementById('optAggressive').innerText = t.optAggressive;
       document.getElementById('txtBaseLabel').innerText = t.baseLabel;
       document.getElementById('txtLeadershipLabel').innerText = t.leadershipLabel;
       document.getElementById('txtMercenariesTitle').innerText = t.mercenariesTitle;
@@ -604,9 +651,15 @@
       document.getElementById('txtColTroopCount').innerText = t.colCount;
     }
 
+    function excelRound(num) {
+      return Math.round((num + Number.EPSILON) * 100000) / 100000;
+    }
+
     function calculate() {
       const rawVal = document.getElementById('baseInput').value;
       const baseInput = parseFloat(rawVal);
+      const stackingMode = parseFloat(document.getElementById('stackingModeSelect').value) || 0.005;
+
       const troopsTable = document.getElementById('troopsTable');
       const monstersTable = document.getElementById('monstersTable');
       const mercenariesTable = document.getElementById('mercenariesTable');
@@ -622,106 +675,103 @@
       }
 
       const t = translations[currentLang];
-      const B = baseInput;
 
-      // New Exact Troop Leadership Calculations from Excel
-      const g9_ranged_lead  = B * 1.0;
-      const g9_corax2_lead  = B * 1.0002049600327936;
-      const g9_mounted_lead = B * 1.0000683200109313;
-      const g9_melee_lead   = B * 1.0041675206668033;
+      // Updated cascade definition order matching Stack Online v4.xlsx
+      const CASCADE_DEFS = [
+        { key: 'g9_ranged', group: 'G9', hp: 16530,  factor: 1,  typeIdx: 8,  isBase: true },
+        { key: 'corax_2',   group: 'G9', hp: 330600, factor: 20, typeIdx: 0,  isBase: false },
+        { key: 'g9_mounted',group: 'G9', hp: 33060,  factor: 2,  typeIdx: 4,  isBase: false },
+        { key: 'g8_ranged', group: 'G8', hp: 9180,   factor: 1,  typeIdx: 12, isBase: false },
+        { key: 'corax_1',   group: 'G8', hp: 183600, factor: 20, typeIdx: 2,  isBase: false },
+        { key: 'g8_mounted',group: 'G8', hp: 18360,  factor: 2,  typeIdx: 6,  isBase: false },
+        { key: 'g9_melee',  group: 'G9', hp: 16530,  factor: 1,  typeIdx: 9,  isBase: false },
+        { key: 's9_ranged', group: 'S9', hp: 16530,  factor: 1,  typeIdx: 10, isBase: false },
+        { key: 's9_mounted',group: 'S9', hp: 33060,  factor: 2,  typeIdx: 5,  isBase: false },
+        { key: 'g8_melee',  group: 'G8', hp: 9180,   factor: 1,  typeIdx: 13, isBase: false },
+        { key: 's8_ranged', group: 'S8', hp: 9180,   factor: 1,  typeIdx: 14, isBase: false },
+        { key: 's8_mounted',group: 'S8', hp: 18360,  factor: 2,  typeIdx: 7,  isBase: false },
+        { key: 's9_melee',  group: 'S9', hp: 16530,  factor: 1,  typeIdx: 11, isBase: false },
+        { key: 's8_melee',  group: 'S8', hp: 9180,   factor: 1,  typeIdx: 15, isBase: false },
+        { key: 'lions_2',   group: 'S9', hp: 330600, factor: 20, typeIdx: 1,  isBase: false },
+        { key: 'lions_1',   group: 'S8', hp: 183600, factor: 20, typeIdx: 3,  isBase: false }
+      ];
 
-      const s9_ranged_lead  = B * 1.0042358406777345;
-      const s9_lions2_lead  = B * 1.0043041606886658;
-      const s9_mounted_lead = B * 1.0043041606886658;
-      const s9_melee_lead   = B * 1.0077201612352258;
+      let resultsMap = {};
+      let previousStackHealth = 0;
+      let totalLeadership = 0;
 
-      const g8_ranged_lead  = B * 1.8061761289881806;
-      const g8_corax1_lead  = B * 1.8063810890209742;
-      const g8_mounted_lead = B * 1.8062444489991119;
-      const g8_melee_lead   = B * 1.8130764500922320;
+      for (let i = 0; i < CASCADE_DEFS.length; i++) {
+        const item = CASCADE_DEFS[i];
+        let count = 0;
 
-      const s8_ranged_lead  = B * 1.8131447701031630;
-      const s8_lions1_lead  = B * 1.8132130901140944;
-      const s8_mounted_lead = B * 1.8132130901140944;
-      const s8_melee_lead   = B * 1.8130764500922320;
+        if (item.isBase) {
+          count = baseInput;
+        } else {
+          const rawValue = (previousStackHealth * (1 + stackingMode)) / item.hp;
+          count = Math.round(excelRound(rawValue));
+        }
 
-      // Total Leadership
-      const totalLeadership = g9_ranged_lead + g9_corax2_lead + g9_mounted_lead + g9_melee_lead +
-                              s9_ranged_lead + s9_lions2_lead + s9_mounted_lead + s9_melee_lead +
-                              g8_ranged_lead + g8_corax1_lead + g8_mounted_lead + g8_melee_lead +
-                              s8_ranged_lead + s8_lions1_lead + s8_mounted_lead + s8_melee_lead;
+        const stackHealth = count * item.hp;
+        const leadership = count * item.factor;
+
+        previousStackHealth = stackHealth;
+        totalLeadership += leadership;
+
+        resultsMap[item.key] = {
+          group: item.group,
+          type: t.troops[item.typeIdx],
+          count: count
+        };
+      }
 
       totalLeadershipEl.innerText = Math.floor(totalLeadership).toLocaleString();
 
-      // Troops Counts
       const troopsData = [
-        // Group 1
-        { group: 'G9', type: t.troops[0], count: g9_corax2_lead / 20 },
-        { group: 'S9', type: t.troops[1], count: s9_lions2_lead / 20 },
-        { group: 'G8', type: t.troops[2], count: g8_corax1_lead / 20 },
-        { group: 'S8', type: t.troops[3], count: s8_lions1_lead / 20 },
+        { group: resultsMap.corax_2.group, type: resultsMap.corax_2.type, count: resultsMap.corax_2.count },
+        { group: resultsMap.lions_2.group, type: resultsMap.lions_2.type, count: resultsMap.lions_2.count },
+        { group: resultsMap.corax_1.group, type: resultsMap.corax_1.type, count: resultsMap.corax_1.count },
+        { group: resultsMap.lions_1.group, type: resultsMap.lions_1.type, count: resultsMap.lions_1.count },
         { divider: true },
-        // Group 2
-        { group: 'G9', type: t.troops[4], count: g9_mounted_lead / 2 },
-        { group: 'S9', type: t.troops[5], count: s9_mounted_lead / 2 },
-        { group: 'G8', type: t.troops[6], count: g8_mounted_lead / 2 },
-        { group: 'S8', type: t.troops[7], count: s8_mounted_lead / 2 },
+        { group: resultsMap.g9_mounted.group, type: resultsMap.g9_mounted.type, count: resultsMap.g9_mounted.count },
+        { group: resultsMap.s9_mounted.group, type: resultsMap.s9_mounted.type, count: resultsMap.s9_mounted.count },
+        { group: resultsMap.g8_mounted.group, type: resultsMap.g8_mounted.type, count: resultsMap.g8_mounted.count },
+        { group: resultsMap.s8_mounted.group, type: resultsMap.s8_mounted.type, count: resultsMap.s8_mounted.count },
         { divider: true },
-        // Group 3
-        { group: 'G9', type: t.troops[8], count: g9_ranged_lead },
-        { group: 'G9', type: t.troops[9], count: g9_melee_lead },
-        { group: 'S9', type: t.troops[10], count: s9_ranged_lead },
-        { group: 'S9', type: t.troops[11], count: s9_melee_lead },
+        { group: resultsMap.g9_ranged.group, type: resultsMap.g9_ranged.type, count: resultsMap.g9_ranged.count },
+        { group: resultsMap.g9_melee.group, type: resultsMap.g9_melee.type, count: resultsMap.g9_melee.count },
+        { group: resultsMap.s9_ranged.group, type: resultsMap.s9_ranged.type, count: resultsMap.s9_ranged.count },
+        { group: resultsMap.s9_melee.group, type: resultsMap.s9_melee.type, count: resultsMap.s9_melee.count },
         { divider: true },
-        // Group 4
-        { group: 'G8', type: t.troops[12], count: g8_ranged_lead },
-        { group: 'G8', type: t.troops[13], count: g8_melee_lead },
-        { group: 'S8', type: t.troops[14], count: s8_ranged_lead },
-        { group: 'S8', type: t.troops[15], count: s8_melee_lead },
+        { group: resultsMap.g8_ranged.group, type: resultsMap.g8_ranged.type, count: resultsMap.g8_ranged.count },
+        { group: resultsMap.g8_melee.group, type: resultsMap.g8_melee.type, count: resultsMap.g8_melee.count },
+        { group: resultsMap.s8_ranged.group, type: resultsMap.s8_ranged.type, count: resultsMap.s8_ranged.count },
+        { group: resultsMap.s8_melee.group, type: resultsMap.s8_melee.type, count: resultsMap.s8_melee.count }
       ];
 
-      // Factor for Monsters & Mercenaries
-      const factor = g9_ranged_lead * 5510;
-
-      // Monsters Calculations
-      const m9_val = (factor / 1210000) * 0.9 - 2;
-      const m8_val = (factor / 670000) * 0.9 - 3;
-      const m7_val = (factor / 310000) * 0.9 - 3;
+      const factor = baseInput * 5510;
 
       const monstersData = [
-        { name: t.monsters[0], val: m9_val },
-        { name: t.monsters[1], val: m8_val },
-        { name: t.monsters[2], val: m7_val },
+        { name: t.monsters[0], val: Math.floor((factor / 1210000) * 0.9) - 2 },
+        { name: t.monsters[1], val: Math.floor((factor / 670000) * 0.9) - 3 },
+        { name: t.monsters[2], val: Math.floor((factor / 310000) * 0.9) - 3 },
       ];
 
-      // Mercenaries Calculations
-      const wyvern_val     = (factor / 690000) * 0.9 * 0.9;
-      const warden_val     = (factor / 470000) * 0.9 * 0.9;
-      const salamander_val = (factor / 410000) * 0.9 * 0.9;
-      const warregal_val   = (factor / 220000) * 0.9 * 0.9;
-      const cannoneer_val  = (factor / 440000) * 0.9 * 0.9;
-      const ariel_val      = g9_ranged_lead * 0.0408;
-      const epic_hunter_val= (factor / 25000) * 0.9;
-      const riders_val     = (factor / 22000) * 0.9;
-      const troops_merc_val= (factor / 11000) * 0.9;
-
       const mercenariesData = [
-        { name: t.mercenaries[0], val: wyvern_val },
-        { name: t.mercenaries[1], val: warden_val },
-        { name: t.mercenaries[2], val: salamander_val },
-        { name: t.mercenaries[3], val: warregal_val },
-        { name: t.mercenaries[4], val: cannoneer_val },
-        { name: t.mercenaries[5], val: ariel_val },
-        { name: t.mercenaries[6], val: epic_hunter_val },
-        { name: t.mercenaries[7], val: riders_val },
-        { name: t.mercenaries[8], val: troops_merc_val },
+        { name: t.mercenaries[0], val: Math.floor((factor / 690000) * 0.9 * 0.9) },
+        { name: t.mercenaries[1], val: Math.floor((factor / 470000) * 0.9 * 0.9) },
+        { name: t.mercenaries[2], val: Math.floor((factor / 410000) * 0.9 * 0.9) },
+        { name: t.mercenaries[3], val: Math.floor((factor / 220000) * 0.9 * 0.9) },
+        { name: t.mercenaries[4], val: Math.floor((factor / 440000) * 0.9 * 0.9) },
+        { name: t.mercenaries[5], val: Math.round(baseInput * 0.0408) },
+        { name: t.mercenaries[6], val: Math.floor((factor / 25000) * 0.9) },
+        { name: t.mercenaries[7], val: Math.floor((factor / 22000) * 0.9) },
+        { name: t.mercenaries[8], val: Math.floor((factor / 11000) * 0.9) },
       ];
 
       function fmt(v) {
-        return Math.floor(v).toLocaleString();
+        return Math.max(0, Math.floor(v)).toLocaleString();
       }
 
-      // Render Troops
       troopsData.forEach(item => {
         if (item.divider) {
           const tr = document.createElement('tr');
@@ -740,7 +790,6 @@
         troopsTable.appendChild(tr);
       });
 
-      // Render Mercenaries
       mercenariesData.forEach(item => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -750,7 +799,6 @@
         mercenariesTable.appendChild(tr);
       });
 
-      // Render Monsters
       monstersData.forEach(item => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
