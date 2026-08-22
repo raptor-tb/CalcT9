@@ -351,6 +351,9 @@
             <div class="lang-option" onclick="selectLanguage('en', 'English', 'gb')">
               <img class="flag-icon" src="https://flagcdn.com/w40/gb.png" alt="GB Flag"> English
             </div>
+            <div class="lang-option" onclick="selectLanguage('fr', 'Français', 'fr')">
+              <img class="flag-icon" src="https://flagcdn.com/w40/fr.png" alt="FR Flag"> Français
+            </div>
             <div class="lang-option" onclick="selectLanguage('it', 'Italiano', 'it')">
               <img class="flag-icon" src="https://flagcdn.com/w40/it.png" alt="IT Flag"> Italiano
             </div>
@@ -480,6 +483,37 @@
         mercenaries: [
           "WYVERN", "WARDEN", "SALAMANDER", "WARREGAL/JAGO", "CANNONEER",
           "ARIEL", "EPIC HUNTER", "RIDERS", "TROOPS"
+        ]
+      },
+      fr: {
+        title: "Calculateur d'Empilement T9",
+        subtitle: "Calcule tous les types de troupes, monstres et mercenaires en fonction de la valeur saisie",
+        instruction: "Modifiez la 'valeur de base' jusqu'à ce qu'elle corresponde à votre commandement total",
+        stackingLabel: "Mode d'Empilement",
+        optConservative: "Conservateur",
+        optModerate: "Modéré",
+        optAggressive: "Agressif",
+        baseLabel: "Valeur de Base (Unités à Distance G9)",
+        leadershipLabel: "Commandement Total Requis",
+        mercenariesTitle: "Mercenaires",
+        mercenariesNote: "Nombre maximal de mercenaires, ajustez selon la disponibilité",
+        monstersTitle: "Monstres",
+        monstersNote: "Nombres maximaux. Ajoutez M9 puis ajustez M8/M7 selon votre Dominance",
+        troopsTitle: "Troupes",
+        colUnitName: "Nom de l'Unité",
+        colCount: "Quantité",
+        colGroup: "Groupe",
+        colTroopType: "Type de Troupe",
+        troops: [
+          "CORAX II", "LION ROYAL II", "CORAX I", "LION ROYAL I",
+          "CHÂTIEUR II", "CRINIÈRE BLANCHE II", "CHÂTIEUR I", "CRINIÈRE BLANCHE I",
+          "PURIFICATEUR II", "PUNISSEUR II", "LÉGITIMISTE II", "DUELISTE II",
+          "PURIFICATEUR I", "PUNISSEUR I", "LÉGITIMISTE I", "DUELISTE I"
+        ],
+        monsters: ["M9", "M8", "M7"],
+        mercenaries: [
+          "VOUIVRE", "GARDIEN", "SALAMANDRE", "WARREGAL/JAGO", "CANONNIER",
+          "ARIEL", "CHASSEUR ÉPIQUE", "CAVALIERS", "TROUPES"
         ]
       },
       it: {
@@ -676,7 +710,6 @@
 
       const t = translations[currentLang];
 
-      // Updated cascade definition order matching Stack Online v4.xlsx
       const CASCADE_DEFS = [
         { key: 'g9_ranged', group: 'G9', hp: 16530,  factor: 1,  typeIdx: 8,  isBase: true },
         { key: 'corax_2',   group: 'G9', hp: 330600, factor: 20, typeIdx: 0,  isBase: false },
